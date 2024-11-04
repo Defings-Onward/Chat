@@ -1,0 +1,35 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'chats/style.css' %}">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+
+    <nav class="navs">
+      <a href="/chat/r_member/{{id}}"><div class="items">Members</div></a>
+      <div class="items">|</div>
+      <a href="/chat/members/{{id}}"><div class="items">Add Members</div></a>
+    </nav>
+   <div>
+    <form method="post" class="pick-m1">
+      {% csrf_token %}
+      {% for x in users %}
+      {% if not x.groupmembers_set.exists %}
+
+      <div class="pick-m2"><input type="checkbox" class="check" value="{{x.id}}" name="member-id"><label class="members">{{x.username}}</label></div>
+
+      {% endif %}
+      {% endfor %}
+      <button type="submit" class="btn">+</button>
+    </form>
+  
+  </div>
+
+</body>
+</html>

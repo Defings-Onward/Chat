@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'chats/style.css' %}">
+  <title>Title</title>
+</head>
+<body>
+  <div class="emoji">
+    <h2 class="emoji-class">Emoji's</h2>
+    <div class="emoji-cont" id="emoji-buttons">
+      
+      
+      
+    </div>
+  </div>
+  <script>
+    let animals = [
+  "\uD83D\uDC31", "\uD83D\uDC30", "\uD83D\uDC34", "\uD83D\uDC35", "\uD83D\uDC36"
+]
+
+
+
+
+let food = [
+  "\uD83C\uDF54", "\uD83C\uDF55", "\uD83C\uDF56", "\uD83C\uDF57", "\uD83C\uDF58"
+];
+
+
+let objects = [
+  "\uD83D\uDCBB", "\uD83D\uDCBC", "\uD83D\uDCBD", "\uD83D\uDCBE", "\uD83D\uDCBF"
+];
+
+
+let flags = [
+  "\uD83C\uDDF1\uDDF2", "\uD83C\uDDF2\uDDF3", "\uD83C\uDDF3\uDDF4", "\uD83C\uDDF4\uDDF5", "\uD83C\uDDF5\uDDF6"
+];
+
+let people = [
+  "\uD83D\uDC68", "\uD83D\uDC69", "\uD83D\uDC66", "\uD83D\uDC67", "\uD83D\uDC66", "\uD83D\uDC65", "\uD83D\uDC67"
+];
+
+let symbols = [
+  "\u2764", "\u0268", "\uD83D\uDC4D", "\uD83D\uDC4E", "\uD83D\uDC4C"
+];
+
+let transportation = [
+  "\uD83D\uDE81", "\uD83D\uDE82", "\uD83D\uDE83", "\uD83D\uDE84", "\uD83D\uDE85"
+];
+
+let nature = [
+  "\uD83C\uDF3C", "\uD83C\uDF3D", "\uD83C\uDF3E", "\uD83C\uDF3F", "\uD83C\uDF40"
+];
+
+
+    let bad = '';
+    animals.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    food.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    objects.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    flags.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    people.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    symbols.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    transportation.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    nature.forEach((x) => {
+      bad += `
+          <button class="emoji-icon" data-emoji="${x}">${x}</button>
+      `  
+
+    })
+    document.querySelector('.emoji-cont').innerHTML = bad
+  </script>
+</body>
+</html>

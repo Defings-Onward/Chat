@@ -1,0 +1,78 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'chats/style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--<link rel="stylesheet" href="../static/chats/style.css">-->
+</head>
+<body>
+<div class="inners">
+    {% for call in users %}
+    {% if call.user_id != user.id %}
+        {% if call.users %}
+        <a href="chat/{{call.user_id}}{{call.group_id}}/{{user.id}}/0/1" class="link" target="iframes2"><div class="reci-id" data-my-value="{{call.user_id}}{{call.group_id}}">
+        {% else %}
+        <a href="chat/{{call.user_id}}{{call.group_id}}/{{user.id}}/0/0" class="link" target="iframes2"><div class="reci-id" data-my-value="{{call.user_id}}{{call.group_id}}">
+        {% endif %}
+            <div class="picser" data-my-value="{{call.user_id}}{{call.group_id}}">
+              {% if call.p_pu %}
+              <img src="/media/{{call.p_pu}}" class="pp">
+              {% else %}
+              {{ call.user_id }}{{call.group_id}}
+              {% endif %}
+            </div>
+
+          <div class="all-conts" data-my-value="{{call.user_id}}{{call.group_id}}">
+            <div class="name" data-my-value="{{call.user_id}}{{call.group_id}}">
+              {{call.user_name}}{{call.groupname}}
+            </div>
+            <div class="last-message" data-my-value="{{call.user_id}}{{call.group_id}}">
+              Last Message
+            </div>
+          </div>
+        </div>
+        </a>
+
+    {% endif %}
+{% endfor %}
+  </div>
+<script>
+
+
+
+    document.addEventListener('click', function(event) {
+  
+    if (event.target.tagName === 'DIV') {
+    
+      const dataMyValues = event.target.getAttribute('data-my-value');
+      console.log(dataMyValues)
+      const divs = document.querySelectorAll('.reci-id');
+divs.forEach(div => {
+  const dataMyValue = div.getAttribute('data-my-value');
+  if (dataMyValue === dataMyValues) {
+    div.style.backgroundColor = 'rgba(31, 37, 41, 0.25)';
+    
+  } else {
+    div.style.backgroundColor = 'transparent'
+    div.style.hover.backgroundColor = 'rgba(31, 37, 41, 0.02)'
+  }
+  div.style.hover = 'rgba(31, 37, 41, 0.2)';
+});
+    }
+
+
+  
+
+});
+
+  
+
+
+
+
+</script>
+</body>
+</html>

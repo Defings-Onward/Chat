@@ -1,0 +1,30 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'chats/style.css' %}">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+
+    <nav class="navs">
+      <a href="/chat/r_member/{{id}}"><div class="items">Members</div></a>
+      <div class="items">|</div>
+      <a href="/chat/members/{{id}}"><div class="items">Add Members</div></a>
+    </nav>
+
+    <div class="big">
+      {% for gm in gm %}
+
+    <div class="form-gm"><div class="user-gm">{{ gm.members.username }}</div><form method="post">{% csrf_token %}<input type="hidden" name="form_type" value="form2"><button type="submit" class="add-m" name="rm" value="{{ gm.members.id }}">Add to Admin..</button></form><form method="post"><input type="hidden" name="form_type" value="form1">{% csrf_token %}<button type="submit" class="delete-m" name="rm" value="{{ gm.members.id }}">Remove..</button></form></div>
+
+    {% endfor %}
+    </div>
+
+
+</body>
+</html>

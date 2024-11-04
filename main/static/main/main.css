@@ -1,0 +1,17 @@
+
+    .pics {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(198 200 207);
+    overflow: hidden
+}
+
+
+.p-picture{
+
+    width: 110%
+}

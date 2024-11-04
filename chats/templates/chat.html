@@ -1,0 +1,673 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'chats/style.css' %}">
+<script type="text/javascript" src="{% static 'chats/jquery-3.6.0.js'%}"></script>
+     <script>
+        $(document).ready(function() {
+          $('.name').click(function() {
+            $('.toggles2').show()
+          });
+          $('.emojis').click(function() {
+            $('.ent-home').show()
+          });
+          $('.rep').click(function() {
+            $('.ent-homey').show()
+          });
+          $('.r-rep').click(function() {
+            $('.ent-homey').hide()
+          });
+        });
+          $(document).mouseup(function (e) {
+            if ($(e.target).
+                closest(".container").
+                length=== 0) {
+                $(".toggles2").hide();
+
+            }
+
+            if ($(e.target).
+                closest(".container").
+                length=== 0) {
+                $(".ent-home").hide();
+                $(".dropDown").hide();
+            }
+            
+        });
+
+
+    </script>
+</head>
+<body>
+<div class="header">
+  <div class="picser">
+      {% if reci.userprofile.profile_picture %}
+      <img src="/media/{{reci.userprofile.profile_picture}}" class="pp">
+      {% elif reci.groupprofile.group_picture %}
+      <img src="/media/{{reci.groupprofile.group_picture}}" class="pp">
+      {% else %}
+      {{ reci.id }}
+      {% endif %}
+    </div>
+  <div class="bag">
+    <div class="name">{{reci.group_name}}{{reci.username}}</div>
+    {% if i_u == 1 %}
+  <div class="o-status">{% if reci.is_anonymous  %} online {% else %} {{reci.last_login.date}} {% endif %}</div>
+  {% else %}
+    <div class="o-status">{% for x in gm %} {{x.members.username}}, {% endfor %}
+  {% endif %}
+  </div>
+  </div>
+
+<div class="toggles2">
+  <div class="reci-info">
+    <div class="picser">
+      {% if reci.userprofile.profile_picture %}
+      <img src="/media/{{reci.userprofile.profile_picture}}" class="pp">
+      {% elif reci.groupprofile.group_picture %}
+      <img src="/media/{{reci.groupprofile.group_picture}}" class="pp">
+      {% else %}
+      {{ reci.id }}
+      {% endif %}
+    </div>
+      <div class="names">{{reci.group_name}}{{reci.username}}</div>
+    {% if reci.username %}
+    <form name="form3" method="post">{% csrf_token %}<input type="hidden" name="form_type" value="form3">
+      <button style="border: none;background: none;color: red;font-size: 24px;" class="block" type="submit" value="{{reci.id}}" name="del-b">Block Contact</button></form>
+        </div>
+    {% else %}
+    <iframe class="iframes3" src="/chat/r_member/{{reci.id}}"></iframe>
+    <form name="form1" method="post">{% csrf_token %}<input type="hidden" name="form_type" value="form1">
+      <button class="delete" type="submit" value="{{reci.id}}" name="del-b">Delete This Group</button></form>
+    {% endif %}
+
+  </div>
+</div>
+
+<div class="deliverer">
+
+        <div class="message-rs">
+          {% if i_u == 1 %}
+            {% for msg in message %}
+            {% if msg.sender == user %}
+              {% if msg.image %}
+                {% if msg.is_video %}
+                <div class="user" id="div-{{msg.id}}"><div class="tired" id="div-{{msg.id}}">
+                   <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                  {% if msg.reply %}
+                        <div class="replies" data-my-value="{{msg.reply.id}}">
+                          {% if msg.reply.image %}
+                          {% if msg.reply.is_video %}
+                          <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                            <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                            Your Browser does not support the video
+                          </video>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% else %}
+                          <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% endif %}
+                          {% else %}
+                          <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% endif %}
+                        </div>
+                  {% endif %}
+                  <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}">
+
+                  <cont class="pb" id="div-{{msg.id}}">
+                    <video class="imgIn" id="div-{{msg.id}}">
+                    <source src="\media\{{ msg.image }}" type="video/mp4">
+                    Your Browser does not support the video
+                  </video>
+                    <def class="play"><def class="play-icon">Play</def></def>
+                  </cont>
+                </a>
+                  <p class="user-messages v" id="div-{{msg.id}}">
+
+                  {{ msg.message }}</p><p class="dates" id="div-{{msg.id}}">{{ msg.sent_at.time}}{{msg.status}}</p></div></div>
+                {% else %}
+                  <div class="user" id="div-{{msg.id}}">
+                    <div class="tired" id="div-{{msg.id}}">
+                      <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                      {% if msg.reply %}
+                        <div class="replies" data-my-value="{{msg.reply.id}}">
+                          {% if msg.reply.image %}
+                          {% if msg.reply.is_video %}
+                          <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                            <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                            Your Browser does not support the video
+                          </video>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% else %}
+                          <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% endif %}
+                          {% else %}
+                          <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                          <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                          {% endif %}
+                        </div>
+                  {% endif %}
+                      <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}">
+                          <img src="\media\{{ msg.image }}" class="imgIn" id="div-{{msg.id}}">
+                        </a>
+
+                      <p class="user-messages" id="div-{{msg.id}}">
+
+
+                        {{ msg.message }}
+                      </p>
+                      <p class="dates" id="div-{{msg.id}}">
+                        {{ msg.sent_at.time}}{{msg.status}}
+                      </p>
+                    </div>
+                  </div>
+                {% endif %}
+              {% else %}
+                  <div class="user"><div class="tired" id="div-{{msg.id}}">
+                     <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                      {% if msg.reply %}
+                      <div class="replies" data-my-value="{{msg.reply.id}}">
+                        {% if msg.reply.image %}
+                        {% if msg.reply.is_video %}
+                        <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                          <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                          Your Browser does not support the video
+                        </video>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% else %}
+                        <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                        {% else %}
+                        <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                      </div>
+                {% endif %}<p class="user-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates" id="div-{{msg.id}}">{{ msg.sent_at.time}}{{msg.status}}</p></div></div>
+              {% endif %}
+            {% else %}
+            {% if msg.image %}
+              {% if msg.is_video %}
+                <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+                  <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                      {% if msg.reply %}
+                      <div class="replies" data-my-value="{{msg.reply.id}}">
+                        {% if msg.reply.image %}
+                        {% if msg.reply.is_video %}
+                        <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                          <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                          Your Browser does not support the video
+                        </video>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% else %}
+                        <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                        {% else %}
+                        <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                      </div>
+                {% endif %}
+                  <a href="/chat/media/{{msg.id}}" target="_top">
+                  <cont class="pb" id="div-{{msg.id}}">
+                    <video class="imgIn" id="div-{{msg.id}}">
+                    <source src="\media\{{ msg.image }}" type="video/mp4">
+                    Your Browser does not support the video
+                  </video>
+                    <def class="play" id="div-{{msg.id}}"><def class="play-icon" id="div-{{msg.id}}">Play</def></def>
+                  </cont>
+                </a>
+                  <p class="reci-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+              {% else %}
+                <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+                  <div class="dropDown r" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                      {% if msg.reply %}
+                      <div class="replies" data-my-value="{{msg.reply.id}}">
+                        {% if msg.reply.image %}
+                        {% if msg.reply.is_video %}
+                        <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                          <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                          Your Browser does not support the video
+                        </video>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% else %}
+                        <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                        {% else %}
+                        <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                      </div>
+                {% endif %}
+                  <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}"><img src="\media\{{ msg.image }}" class="imgIn"></a>
+                  <p class="reci-messages" id="div-{{msg.id}}">
+                  {{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+              {% endif %}
+            {% else %}
+                <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+                   <div class="dropDown r" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                        <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                        <form method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="form_type" value="form4">
+                          <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                          <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                        </form>
+                      </div>
+                      {% if msg.reply %}
+                      <div class="replies" data-my-value="{{msg.reply.id}}">
+                        {% if msg.reply.image %}
+                        {% if msg.reply.is_video %}
+                        <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                          <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                          Your Browser does not support the video
+                        </video>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% else %}
+                        <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                        {% else %}
+                        <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                        <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                        {% endif %}
+                      </div>
+                {% endif %}
+                  <p class="reci-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+            {% endif %}
+
+
+            {% endif %}
+
+            {% endfor %}
+           {% else %}
+            {% for msg in groupmessages %}
+            {% if msg.sent_by == user %}
+            {% if msg.image %}
+            {% if msg.is_video %}
+            <div class="user" id="div-{{msg.id}}"><div class="tired" id="div-{{msg.id}}">
+               <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+              {% if msg.reply %}
+                    <div class="replies" data-my-value="{{msg.reply.id}}">
+                      {% if msg.reply.image %}
+                      {% if msg.reply.is_video %}
+                      <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                        <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                        Your Browser does not support the video
+                      </video>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% else %}
+                      <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% endif %}
+                      {% else %}
+                      <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% endif %}
+                    </div>
+              {% endif %}
+              <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}">
+
+              <cont class="pb" id="div-{{msg.id}}">
+                <video class="imgIn" id="div-{{msg.id}}">
+                <source src="\media\{{ msg.image }}" type="video/mp4">
+                Your Browser does not support the video
+              </video>
+                <def class="play"><def class="play-icon">Play</def></def>
+              </cont>
+            </a>
+              <p class="user-messages v" id="div-{{msg.id}}">
+
+              {{ msg.message }}</p><p class="dates" id="div-{{msg.id}}">{{ msg.sent_at.time}}{{msg.status}}</p></div></div>
+            {% else %}
+              <div class="user" id="div-{{msg.id}}">
+                <div class="tired" id="div-{{msg.id}}">
+                  <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+                  {% if msg.reply %}
+                    <div class="replies" data-my-value="{{msg.reply.id}}">
+                      {% if msg.reply.image %}
+                      {% if msg.reply.is_video %}
+                      <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                        <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                        Your Browser does not support the video
+                      </video>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% else %}
+                      <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% endif %}
+                      {% else %}
+                      <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                      <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                      {% endif %}
+                    </div>
+              {% endif %}
+                  <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}">
+                      <img src="\media\{{ msg.image }}" class="imgIn" id="div-{{msg.id}}">
+                    </a>
+
+                  <p class="user-messages" id="div-{{msg.id}}">
+
+
+                    {{ msg.message }}
+                  </p>
+                  <p class="dates" id="div-{{msg.id}}">
+                    {{ msg.sent_at.time}}{{msg.status}}
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+          {% else %}
+              <div class="user"><div class="tired" id="div-{{msg.id}}">
+                 <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+                  {% if msg.reply %}
+                  <div class="replies" data-my-value="{{msg.reply.id}}">
+                    {% if msg.reply.image %}
+                    {% if msg.reply.is_video %}
+                    <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                      <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                      Your Browser does not support the video
+                    </video>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% else %}
+                    <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                    {% else %}
+                    <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                  </div>
+            {% endif %}<p class="user-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates" id="div-{{msg.id}}">{{ msg.sent_at.time}}{{msg.status}}</p></div></div>
+          {% endif %}
+        {% else %}
+        {% if msg.image %}
+          {% if msg.is_video %}
+            <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+              <div class="dropDown u" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+                  {% if msg.reply %}
+                  <div class="replies" data-my-value="{{msg.reply.id}}">
+                    {% if msg.reply.image %}
+                    {% if msg.reply.is_video %}
+                    <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                      <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                      Your Browser does not support the video
+                    </video>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% else %}
+                    <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                    {% else %}
+                    <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                  </div>
+            {% endif %}
+              <a href="/chat/media/{{msg.id}}" target="_top">
+              <cont class="pb" id="div-{{msg.id}}">
+                <video class="imgIn" id="div-{{msg.id}}">
+                <source src="\media\{{ msg.image }}" type="video/mp4">
+                Your Browser does not support the video
+              </video>
+                <def class="play" id="div-{{msg.id}}"><def class="play-icon" id="div-{{msg.id}}">Play</def></def>
+              </cont>
+            </a>
+              <p class="reci-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+          {% else %}
+            <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+              <div class="dropDown r" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+                  {% if msg.reply %}
+                  <div class="replies" data-my-value="{{msg.reply.id}}">
+                    {% if msg.reply.image %}
+                    {% if msg.reply.is_video %}
+                    <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                      <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                      Your Browser does not support the video
+                    </video>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% else %}
+                    <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                    {% else %}
+                    <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                  </div>
+            {% endif %}
+              <a href="/chat/media/{{msg.id}}" target="_top" id="div-{{msg.id}}"><img src="\media\{{ msg.image }}" class="imgIn"></a>
+              <p class="reci-messages" id="div-{{msg.id}}">
+              {{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+          {% endif %}
+        {% else %}
+            <div class="reci"><div class="tired reci-s" id="div-{{msg.id}}">
+               <div class="dropDown r" id="hidden-div-{{msg.id}}" style="display: none;">
+
+                    <a href="/chat/{{reci.id}}/{{user.id}}/{{msg.id}}/{{i_u}}" class="dd-menu">Reply</a>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="form_type" value="form4">
+                      <button type="submit" class="dd-menu" name="copy" value="{{msg.id}}">Copy</button>
+                      <button type="submit" class="dd-menu" name="delete" value="{{msg.id}}">Delete</button>
+                    </form>
+                  </div>
+                  {% if msg.reply %}
+                  <div class="replies" data-my-value="{{msg.reply.id}}">
+                    {% if msg.reply.image %}
+                    {% if msg.reply.is_video %}
+                    <video class="rMsgImg" data-my-value="{{msg.reply.id}}">
+                      <source src="\media\{{ msg.reply.image }}" type="video/mp4">
+                      Your Browser does not support the video
+                    </video>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% else %}
+                    <div class="replyImg" data-my-value="{{msg.reply.id}}"><img src="\media\{{msg.reply.image}}" class="rMsgImg"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                    {% else %}
+                    <div class="replyImg blh" data-my-value="{{msg.reply.id}}"></div>
+                    <div class="replyMsg" data-my-value="{{msg.reply.id}}">{{msg.reply.message}}</div>
+                    {% endif %}
+                  </div>
+            {% endif %}
+              <p class="reci-messages" id="div-{{msg.id}}">{{ msg.message }}</p><p class="dates2" id="div-{{msg.id}}">{{ msg.sent_at.time}}</p></div></div>
+        {% endif %}
+            {% endif %}
+
+            {% endfor %}
+          {% endif %}
+        </div>
+</div>
+{% for reply in reply %}
+{% if reply %}
+ <div class="ent-homey">
+
+              <div class="reply-c">
+                {% if reply.image %}
+                {% if reply.is_video %}
+                <video class="r-i">
+                  <source src="\media\{{ reply.image }}" type="video/mp4">
+                  This browser doesnt support video
+                </video>
+                {% else %}
+                <div class="reply-img"><img class="r-i" src="/media/{{reply.image}}"></div>
+                <div class="reply-content">{{reply.message}}</div>
+                {%endif%}
+                {% else %}
+                <div class="reply-content">{{reply.message}}</div>
+                {% endif %}
+              </div>
+            </div>
+{% endif %}
+{% endfor %}
+
+        <form method="post" name="form2" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="form2">
+            <div class="ent-home">
+              <iframe class="iframes4" src="/chat/emoji" id="iframe1"></iframe>
+            </div>
+
+          <div class="message-box">
+            <input type="text" placeholder="Message" class="inputs" name="r-message" id="message-input">
+            <emoji class="send-btn emojis"><img src="{% static 'chats/images/emoji.png' %}" class="btns2"></emoji>
+            <label for="file-input" class="send-btn">
+              <img src="{% static 'chats/images/spring.png' %}" class="btns2">
+              <input type="file" id="file-input" name="imgs"/>
+            </label>
+
+            <button class="send-btn r-rep" type="submit" id="send-button"><img src="{% static 'chats/images/sendbtn.png' %}" class="btns2"></button>
+          </div>
+        </form>
+<script>
+  const iframe = document.getElementById('iframe1')
+  
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
+ 
+iframe.addEventListener('load', () => {
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document
+  const emojiButtons = iframeDoc.getElementById('emoji-buttons');
+  emojiButtons.addEventListener('click', (event) => {
+	if (event.target.tagName === 'BUTTON') {
+		const emoji = event.target.dataset.emoji;
+		messageInput.value += emoji;
+    console.log("1")
+	}
+});
+console.log(emojiButtons)
+
+})
+
+document.querySelectorAll('.tired').forEach(function(div) {
+  div.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+    var hiddenDivId = 'hidden-div-' + event.target.id.split('-')[1];
+    console.log(hiddenDivId)
+    document.getElementById(hiddenDivId).style.display = 'flex';
+    
+  });
+});
+
+
+
+    document.addEventListener('click', function(event) {
+
+    if (event.target.tagName === 'DIV') {
+
+      const dataMyValues = event.target.getAttribute('data-my-value');
+      console.log(dataMyValues)
+      document.getElementById(`div-${dataMyValues}`).scrollIntoView(12);
+      console.log(dataMyValues)
+    }
+});
+
+
+
+</script>
+
+</body>
+</html>

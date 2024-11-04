@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %}Chats{% endblock %}
+{% block query %}
+
+   <script>
+        $(document).ready(function() {
+          $('.addGroup').click(function() {
+            $('.toggles').show()
+          });
+          $('.group-pop-btn').click(function() {
+            $('.toggles').hide()
+          }
+
+          );
+        })
+    </script>{% endblock %}
+{% block content %}
+<div class="toggles">
+  <div class="back-fade">
+</div>
+<div class="group-pop-back">
+  <div class="group-pop-cont">
+    <form method="post" class="forms">
+      {% csrf_token %}
+      <input type="text" placeholder="Enter Group name" class="group-pop-input" name="group-name">
+      <button type="submit" class="group-pop-btn">Create Group</button>
+    </form>
+  </div>
+</div>
+</div>
+
+<div class="conts">
+  <iframe class="iframes" src="calls" name="iframes">
+
+  </iframe>
+<div class="addGroup">Add Group</div>
+  <div class="inners2">
+      <iframe src="chat/def" class="iframes2" name="iframes2">
+      </iframe>
+  </div>
+</div>
+{% endblock %}
